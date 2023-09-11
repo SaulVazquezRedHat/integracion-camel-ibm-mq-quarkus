@@ -35,10 +35,12 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+  <!--
     <dependency>
       <groupId>org.apache.camel.quarkus</groupId>
       <artifactId>camel-quarkus-amqp</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-openshift</artifactId>
@@ -60,6 +62,40 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- EXTRAS -->
+    <dependency>
+      <groupId>org.apache.camel.quarkus</groupId>
+      <artifactId>camel-quarkus-timer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.quarkus</groupId>
+      <artifactId>camel-quarkus-log</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.quarkus</groupId>
+      <artifactId>camel-quarkus-direct</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.camel.quarkus</groupId>
+        <artifactId>camel-quarkus-jms</artifactId>
+    </dependency>
+
+    <!-- IBM MQ -->
+    <dependency>
+        <groupId>com.ibm.mq</groupId>
+        <artifactId>com.ibm.mq.allclient</artifactId>
+        <version>9.1.0.5</version>
+    </dependency>
+    <!--
+    <dependency>
+        <groupId>com.ibm.jms</groupId>
+        <artifactId>ibm.jms</artifactId>
+        <version>5.3</version>
+    </dependency>
+    -->
+
+
   </dependencies>
   <repositories>
     <repository>
