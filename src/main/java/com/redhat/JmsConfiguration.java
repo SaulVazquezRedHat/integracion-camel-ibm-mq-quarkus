@@ -3,62 +3,45 @@ package com.redhat;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
-import javax.jms.ConnectionFactory;
-import javax.transaction.TransactionSynchronizationRegistry;
-import javax.transaction.UserTransaction;
 
-import org.apache.camel.component.jms.JmsComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 
 import com.ibm.msg.client.jms.JmsConnectionFactory;
 import com.ibm.msg.client.jms.JmsFactoryFactory;
-import com.ibm.msg.client.wmq.WMQConstants;
 
-import javax.jms.Destination;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.JMSProducer;
-import javax.jms.TextMessage;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class JmsConfiguration {
 
   private static final Logger logger = LoggerFactory.getLogger(JmsConfiguration.class);
-  
-  private String host = "localhost";
-  private int port = 1414;
-  private String queueManager = "QM1";
-  private String channel = "DEV.APP.SVRCONN";
-  private String username = "app";
-  private String password = "passw0rd";
-  private long receiveTimeout = 2000;
 
-  @Produces
-  @Named("xajms")
-  public JmsComponent mq() {
-    logger.info("\n\n>>>>>>>>>>>>>>>>>>>>>>>\nHello En JmsConfiguration\n\n");
-    JmsComponent jmsComponent = new JmsComponent();
-    //jmsComponent.setConnectionFactory(mqQueueConnectionFactory());
-    jmsComponent.setConnectionFactory(connectionFactory());
-    return jmsComponent;
+  @ConfigProperty(name = "mq.host") 
+  String host;
 
-  }
+  @ConfigProperty(name = "mq.port") 
+  int port;
+
+  @ConfigProperty(name = "mq.queueManager") 
+  String queueManager;
+
+  @ConfigProperty(name = "mq.channel") 
+  String channel;
+
+  @ConfigProperty(name = "mq.username") 
+  String username;
+
+  @ConfigProperty(name = "mq.password") 
+  String password;
 
   @Produces
   @Named("connectionFactory")
   public JmsConnectionFactory connectionFactory() {
-    logger.info("\n\n>>>>>>>>>>>>>>>>>>>>>>>\nHello En mqQueueConnectionFactory\n\n");
+    logger.info("Creating connectionFactory");
 
-    // Variables
-		JMSContext context = null;
-		Destination destination = null;
-		JMSProducer producer = null;
-		JMSConsumer consumer = null;
     JmsConnectionFactory cf = null;
 
     try {
@@ -79,26 +62,6 @@ public class JmsConfiguration {
       logger.error(e.getMessage(), e);
     }
     return cf;
-  }
-
-
-  public MQQueueConnectionFactory mqQueueConnectionFactory() {
-    logger.info("\n\n>>>>>>>>>>>>>>>>>>>>>>>\nHello En mqQueueConnectionFactory\n\n");
-    MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
-    mqQueueConnectionFactory.setHostName(host);
-    try {
-      mqQueueConnectionFactory.setTransportType(WMQConstants.WMQ_CM_CLIENT);
-      mqQueueConnectionFactory.setChannel(channel);
-      mqQueueConnectionFactory.setPort(port);
-      mqQueueConnectionFactory.setQueueManager(queueManager);
-      mqQueueConnectionFactory.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
-      mqQueueConnectionFactory.setStringProperty(WMQConstants.USERID, username);
-      mqQueueConnectionFactory.setStringProperty(WMQConstants.PASSWORD, password);
-      mqQueueConnectionFactory.setStringProperty(WMQConstants.WMQ_CHANNEL, channel);
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-    }
-    return mqQueueConnectionFactory;
   }
 
 }

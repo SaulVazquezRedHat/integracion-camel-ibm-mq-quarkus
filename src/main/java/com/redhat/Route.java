@@ -16,29 +16,7 @@ public class Route extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        logger.info("\n\n>>>>>>>>>>>>>>>>>>>>>>>\nHello World 2\n\n");
-
-        /*
-        // Consume from rest endpoint
-        rest("/api")
-            .post("/hello")
-            .consumes("plain/text").type(String.class)
-            .to("direct:greet");
-
-            from("direct:greet")
-                .log("sending ${body} to JMS queue")
-                .wireTap("direct:tap");
-
-            from("direct:tap")
-                .to("jms:queue:orders");
-        */
-
-        /* 
-        // ESTA OPCION YA SIRVE
-        from("timer:generate?repeatCount=5&period=1000")
-            .log("Hello router!")
-            .to("jms:queue:DEV.QUEUE.1");
-        */
+        logger.info("Integration is begining...");
 
         from("timer:generate?repeatCount=5&period=1000")
             .routeId("generate-route")
